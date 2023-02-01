@@ -22,8 +22,9 @@ import {
 } from "./clients/endpoint";
 import Env from "./env";
 import { jwksRefreshEndpoint } from "./jwks/endpoint";
-import { getKeyset, getSigningKey, saveNewKey } from "./jwks/keys";
+import { clearKeys, getKeyset, getSigningKey, saveNewKey } from "./jwks/keys";
 import {
+  changeUserEmail,
   changeUserPassword,
   createUser,
   deleteUser,
@@ -43,7 +44,9 @@ export enum AdminDashboardActionType {
   DeleteClient = "deleteClient",
   CreateClient = "createClient",
   RefreshKeys = "refreshKeys",
+  ClearKeys = "clearKeys",
   ChangePassword = "changePassword",
+  ChangeEmail = "changeEmail",
   DeleteUser = "deleteUser",
   CreateUser = "createUser",
 }
@@ -86,6 +89,13 @@ const actionHandlers: Record<
       message: "Keys refreshed",
     };
   },
+  [AdminDashboardActionType.ClearKeys]: async (env, formData) => {
+    await clearKeys(env);
+    return {
+      variant: "success",
+      message: "Keys cleared",
+    };
+  },
   [AdminDashboardActionType.ChangePassword]: async (env, formData) => {
     const paramsJSON = formData.get("params");
     if (paramsJSON == null) {
@@ -104,6 +114,26 @@ const actionHandlers: Record<
     return {
       variant: "success",
       message: "Password changed",
+    };
+  },
+  [AdminDashboardActionType.ChangeEmail]: async (env, formData) => {
+    const paramsJSON = formData.get("params");
+    if (paramsJSON == null) {
+      throw new Error("Missing params");
+    }
+    const params = JSON.parse(paramsJSON);
+    const id = params.id;
+    if (id == null) {
+      throw new Error("Missing ID");
+    }
+    const email = formData.get("email");
+    if (email == null) {
+      throw new Error("Missing email");
+    }
+    await changeUserEmail(env, id, email);
+    return {
+      variant: "success",
+      message: "Email changed",
     };
   },
   [AdminDashboardActionType.DeleteUser]: async (env, formData) => {
@@ -127,11 +157,15 @@ const actionHandlers: Record<
     if (username == null) {
       throw new Error("Missing username");
     }
+    const email = formData.get("email");
+    if (email == null) {
+      throw new Error("Missing email");
+    }
     const password = formData.get("password");
     if (password == null) {
       throw new Error("Missing password");
     }
-    const user = await createUser(env, username, password);
+    const user = await createUser(env, username, email, password);
     return {
       variant: "success",
       message: `User ${username} created with ID ${user.id}`,

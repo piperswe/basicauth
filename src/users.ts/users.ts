@@ -5,6 +5,7 @@ export interface User {
   id: number;
   username: string;
   passwordHash: string;
+  email: string;
 }
 
 export async function getUsers(env: Env): Promise<User[]> {
@@ -76,18 +77,42 @@ export async function changeUserPassword(
   return user;
 }
 
+export async function changeUserEmail(
+  env: Env,
+  userId: number,
+  email: string
+): Promise<User> {
+  const user = await getUserById(env, userId);
+  if (user == null) {
+    throw new Error("Invalid user ID");
+  }
+  user.email = email;
+  const result = await env.DB.prepare(
+    `
+      UPDATE users SET email = ? WHERE id = ?
+    `
+  )
+    .bind(user.email, user.id)
+    .run();
+  if (!result.success) {
+    throw new Error("Couldn't change password: " + JSON.stringify(result));
+  }
+  return user;
+}
+
 export async function createUser(
   env: Env,
   username: string,
+  email: string,
   password: string
 ): Promise<User> {
   const hash = await hashPassword(password);
   const result = await env.DB.prepare(
     `
-      INSERT INTO users (username, passwordHash) VALUES (?, ?)
+      INSERT INTO users (username, email, passwordHash) VALUES (?, ?)
     `
   )
-    .bind(username, hash)
+    .bind(username, email, hash)
     .run();
   if (!result.success) {
     throw new Error("Couldn't create user: " + JSON.stringify(result));

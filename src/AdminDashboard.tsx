@@ -56,6 +56,24 @@ function UserView({ user }: { user: User }) {
       </Card.Header>
       <Card.Body>
         <ActionForm
+          action={AdminDashboardActionType.ChangeEmail}
+          params={{ id: user.id }}
+          className="mb-3"
+        >
+          <Form.Group className="mb-3 form-floating">
+            <Form.Control
+              type="email"
+              name="email"
+              value={user.email}
+              placeholder="Enter a new email address"
+            />
+            <Form.Label>New email address</Form.Label>
+          </Form.Group>
+          <Button type="submit" variant="primary">
+            Change email
+          </Button>
+        </ActionForm>
+        <ActionForm
           action={AdminDashboardActionType.ChangePassword}
           params={{ id: user.id }}
           className="mb-3"
@@ -171,6 +189,14 @@ export default function AdminDashboard({ flash, request, env, data }: Props) {
             </Form.Group>
             <Form.Group className="mb-3 form-floating">
               <Form.Control
+                type="email"
+                name="email"
+                placeholder="Enter an email address"
+              />
+              <Form.Label>Email address</Form.Label>
+            </Form.Group>
+            <Form.Group className="mb-3 form-floating">
+              <Form.Control
                 type="password"
                 name="password"
                 placeholder="Enter a password"
@@ -190,6 +216,11 @@ export default function AdminDashboard({ flash, request, env, data }: Props) {
       <ActionForm action={AdminDashboardActionType.RefreshKeys}>
         <Button type="submit" variant="warning">
           Refresh keys
+        </Button>
+      </ActionForm>
+      <ActionForm action={AdminDashboardActionType.ClearKeys}>
+        <Button type="submit" variant="danger">
+          Clear keys
         </Button>
       </ActionForm>
     </Page>

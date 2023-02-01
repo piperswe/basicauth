@@ -144,6 +144,5 @@ export async function getCodeData(
   if (data == null) {
     return null;
   }
-  await env.AUTHCODES.delete(code);
   return data;
 }

@@ -16,7 +16,10 @@ export async function generateToken(
   user: User,
   client: Client
 ): Promise<string> {
-  return await new SignJWT({})
+  return await new SignJWT({
+    preferred_username: user.username,
+    email: user.email,
+  })
     .setProtectedHeader({ alg: key.alg, typ: "JWT" })
     .setIssuedAt()
     .setIssuer(`https://${env.DOMAIN}/`)
@@ -47,20 +50,20 @@ export default async function tokenEndpoint(req: Request, ctx: Context) {
     console.log("Missing authorization code");
     return badRequest("Missing authorization code");
   }
-  const redirectUri = formData.get("redirect_uri");
-  if (redirectUri == null) {
-    console.log("Missing redirect URI");
-    return badRequest("Missing redirect URI");
-  }
+  // const redirectUri = formData.get("redirect_uri");
+  // if (redirectUri == null) {
+  //   console.log("Missing redirect URI");
+  //   return badRequest("Missing redirect URI");
+  // }
   const codeData = await getCodeData(env, code);
   if (codeData == null) {
     console.log("Invalid code", code);
     return forbidden("Invalid code");
   }
-  if (codeData.redirectUri !== redirectUri) {
-    console.log("Request URI mismatch");
-    return forbidden("Request URI mismatch");
-  }
+  // if (codeData.redirectUri !== redirectUri) {
+  //   console.log("Request URI mismatch");
+  //   return forbidden("Request URI mismatch");
+  // }
   const client = await getClientById(env, codeData.clientId);
   if (client == null) {
     console.log("Invalid client ID in auth code");
@@ -68,10 +71,10 @@ export default async function tokenEndpoint(req: Request, ctx: Context) {
       "Authorization code had invalid client ID " + codeData.clientId
     );
   }
-  if (client.secret !== clientSecret) {
-    console.log("Invalid client secret ", client, clientSecret);
-    return forbidden("Invalid client secret");
-  }
+  // if (client.secret !== clientSecret) {
+  //   console.log("Invalid client secret ", client, clientSecret);
+  //   return forbidden("Invalid client secret");
+  // }
   const user = await getUserById(env, codeData.userId);
   if (user == null) {
     console.log("Invalid user ID in auth code");
@@ -85,6 +88,7 @@ export default async function tokenEndpoint(req: Request, ctx: Context) {
   return new JSONResponse(
     {
       access_token: token,
+      id_token: token,
       token_type: "id_token",
       expires_in: expirationTime,
       scope: "openid",

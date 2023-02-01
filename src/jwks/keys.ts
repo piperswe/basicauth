@@ -1,6 +1,8 @@
 import { exportJWK, generateKeyPair, importJWK, KeyLike } from "jose";
 import Env from "../env";
 
+const defaultAlg = "RS256";
+
 interface DBKey {
   id: number;
   valid: number;
@@ -69,7 +71,7 @@ export function getSigningKey(keyset: Keyset): Key {
 }
 
 async function generateNewKey(): Promise<Key> {
-  const { publicKey, privateKey } = await generateKeyPair("ES256", {
+  const { publicKey, privateKey } = await generateKeyPair(defaultAlg, {
     extractable: true,
   });
   return {
@@ -78,7 +80,7 @@ async function generateNewKey(): Promise<Key> {
     publicJWK: JSON.stringify(await exportJWK(publicKey)),
     privateKey,
     privateJWK: JSON.stringify(await exportJWK(privateKey)),
-    alg: "ES256",
+    alg: defaultAlg,
     id: -1,
     created: new Date(),
   };
