@@ -13,6 +13,7 @@ analytics_engine_datasets = [
 
 [vars]
 DOMAIN = "auth.piperswe.me"
+ROOT_REDIRECT = "https://piper.cloudflareaccess.com"
 NAME = "Piper's Authentication"
 
 [[ kv_namespaces ]]
