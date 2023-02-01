@@ -1,5 +1,6 @@
-import { exportJWK, generateKeyPair, importJWK, KeyLike } from "jose";
 import Env from "../env";
+
+import { exportJWK, generateKeyPair, importJWK, KeyLike } from "jose";
 
 const defaultAlg = "RS256";
 

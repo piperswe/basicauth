@@ -1,7 +1,8 @@
+import Env from "../env";
+
 import { JSONResponse } from "@worker-tools/json-fetch";
 import { Context } from "@worker-tools/middleware";
 import { ok } from "@worker-tools/response-creators";
-import Env from "../env";
 
 export default function oidcDiscovery(req: Request, ctx: Context) {
   const env = ctx.env as Env;

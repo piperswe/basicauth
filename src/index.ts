@@ -1,11 +1,12 @@
-import { WorkerRouter } from "@worker-tools/router";
-import { permanentRedirect } from "@worker-tools/response-creators";
 import oidcDiscovery from "./oidc/discovery";
 import { jwksClearEndpoint, jwksEndpoint } from "./jwks/endpoint";
 import { authorizationForm, authorizationEndpoint } from "./oidc/authorization";
 import admin from "./admin";
 import tokenEndpoint from "./oidc/token";
 import Env from "./env";
+
+import { permanentRedirect } from "@worker-tools/response-creators";
+import { WorkerRouter } from "@worker-tools/router";
 
 export default new WorkerRouter()
   .get("/", (req, ctx) => permanentRedirect((ctx.env as Env).ROOT_REDIRECT))

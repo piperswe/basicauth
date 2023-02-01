@@ -1,8 +1,10 @@
+import { clearKeys, getKeyset, keysetToJwks, saveNewKey } from "./keys";
+
+import Env from "../env";
+
 import { JSONResponse } from "@worker-tools/json-fetch";
 import { Context } from "@worker-tools/middleware";
 import { ok } from "@worker-tools/response-creators";
-import Env from "../env";
-import { clearKeys, getKeyset, keysetToJwks, saveNewKey } from "./keys";
 
 export async function jwksEndpoint(req: Request, ctx: Context) {
   const env = ctx.env as Env;

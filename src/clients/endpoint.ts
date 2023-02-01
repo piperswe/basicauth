@@ -1,9 +1,11 @@
+import { createClient, getClientById, getClients } from "./clients";
+
+import Env from "../env";
+
 import { JSONResponse } from "@worker-tools/json-fetch";
 import { BasicsContext, Context } from "@worker-tools/middleware";
-import { badRequest, notFound, ok } from "@worker-tools/response-creators";
+import { notFound, ok } from "@worker-tools/response-creators";
 import { RouteContext } from "@worker-tools/router";
-import Env from "../env";
-import { createClient, getClientById, getClients } from "./clients";
 
 export async function getClientEndpoint(
   req: Request,

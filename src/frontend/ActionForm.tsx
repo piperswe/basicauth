@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Form, FormProps } from "semantic-ui-react";
 
 export interface Props<T> extends FormProps {

@@ -1,6 +1,7 @@
 import { unstable_dev } from "wrangler";
-import type { UnstableDevWorker } from "wrangler";
 import { describe, expect, it, beforeAll, afterAll } from "vitest";
+
+import type { UnstableDevWorker } from "wrangler";
 
 describe("Worker", () => {
   let worker: UnstableDevWorker;

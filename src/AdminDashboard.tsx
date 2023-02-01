@@ -1,5 +1,3 @@
-import React from "react";
-import { Button, Card, Form, Icon, Message, Segment } from "semantic-ui-react";
 import { AdminDashboardActionType } from "./admin";
 import { Client, getClients } from "./clients/clients";
 import Env from "./env";
@@ -7,6 +5,9 @@ import ActionForm from "./frontend/ActionForm";
 import Page from "./frontend/Page";
 import { getKeyset, Keyset, keysetToJwks } from "./jwks/keys";
 import { getUsers, User } from "./users.ts/users";
+
+import { Button, Card, Form, Icon, Message, Segment } from "semantic-ui-react";
+import * as React from "react";
 
 function ClientView({
   client,

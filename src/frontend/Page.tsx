@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
+import * as React from "react";
 import { Container } from "semantic-ui-react";
 
 export interface Props {
   title: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export default function Page({ title, children }: Props) {

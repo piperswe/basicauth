@@ -1,12 +1,14 @@
-import { JSONResponse } from "@worker-tools/json-fetch";
-import { Context } from "@worker-tools/middleware";
-import { badRequest, forbidden, ok } from "@worker-tools/response-creators";
-import { SignJWT } from "jose";
+import { getCodeData } from "./authorization";
+
 import { Client, getClientById } from "../clients/clients";
 import Env from "../env";
 import { getKeyset, getSigningKey, Key } from "../jwks/keys";
 import { getUserById, User } from "../users.ts/users";
-import { getCodeData } from "./authorization";
+
+import { JSONResponse } from "@worker-tools/json-fetch";
+import { Context } from "@worker-tools/middleware";
+import { badRequest, forbidden, ok } from "@worker-tools/response-creators";
+import { SignJWT } from "jose";
 
 const expirationTime = 60 * 60 * 24;
 

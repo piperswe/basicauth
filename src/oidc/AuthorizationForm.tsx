@@ -1,9 +1,11 @@
-import React from "react";
-import { Button, Card, Form, Grid, Icon } from "semantic-ui-react";
+import { FormContext } from "./authorization";
+
 import { Client } from "../clients/clients";
 import Env from "../env";
 import Page from "../frontend/Page";
-import { FormContext } from "./authorization";
+
+import * as React from "react";
+import { Card, Form, Icon } from "semantic-ui-react";
 
 export interface Props {
   env: Env;

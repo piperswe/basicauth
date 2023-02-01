@@ -1,20 +1,5 @@
-import React from "react";
-import { basics, Context } from "@worker-tools/middleware";
-import {
-  badRequest,
-  found,
-  ok,
-  requestHeaderFieldsTooLarge,
-} from "@worker-tools/response-creators";
-import { WorkerRouter } from "@worker-tools/router";
-import { renderToReadableStream } from "react-dom/server";
 import AdminDashboard, { fetchData, FlashProps } from "./AdminDashboard";
-import {
-  createClient,
-  deleteClient,
-  getClientById,
-  getClients,
-} from "./clients/clients";
+import { createClient, deleteClient, getClientById } from "./clients/clients";
 import {
   createClientEndpoint,
   getClientEndpoint,
@@ -33,6 +18,11 @@ import {
 import { getCodeData } from "./oidc/authorization";
 import { generateToken } from "./oidc/token";
 import { okReact } from "./frontend/render";
+
+import { WorkerRouter } from "@worker-tools/router";
+import { badRequest, found, ok } from "@worker-tools/response-creators";
+import { basics, Context } from "@worker-tools/middleware";
+import * as React from "react";
 
 async function adminDashboard(req: Request, ctx: Context) {
   const env = ctx.env as Env;
@@ -82,14 +72,14 @@ const actionHandlers: Record<
       message: `Client ${name} created with ID ${client.id}`,
     };
   },
-  [AdminDashboardActionType.RefreshKeys]: async (env, formData) => {
+  [AdminDashboardActionType.RefreshKeys]: async (env) => {
     await saveNewKey(env);
     return {
       variant: "success",
       message: "Keys refreshed",
     };
   },
-  [AdminDashboardActionType.ClearKeys]: async (env, formData) => {
+  [AdminDashboardActionType.ClearKeys]: async (env) => {
     await clearKeys(env);
     return {
       variant: "success",

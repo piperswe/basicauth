@@ -1,5 +1,6 @@
 import Env from "../env";
-import bcrypt from "bcryptjs";
+
+import * as bcrypt from "bcryptjs";
 
 export interface User {
   id: number;
