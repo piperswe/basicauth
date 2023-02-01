@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Container } from "react-bootstrap";
+import { Container } from "semantic-ui-react";
 
 export interface Props {
   title: string;
@@ -12,17 +12,22 @@ export default function Page({ title, children }: Props) {
       <head>
         <title>{title}</title>
         <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          href="https://cdn.jsdelivr.net/npm/semantic-ui-css@2.5.0/semantic.min.css"
+          integrity="sha256-cDGQ39yChhpN5vzgHbjIdGEtQ5kXE9tttCsI7VR9TuY="
           crossOrigin="anonymous"
         />
       </head>
       <body>
         <Container>{children}</Container>
         <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"
+          integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+          crossOrigin="anonymous"
+        ></script>
+        <script
+          src="https://cdn.jsdelivr.net/npm/semantic-ui-css@2.5.0/semantic.min.js"
+          integrity="sha256-fN8vcX2ULyTDspVTHEteK8hd3rQAb5thNiwakjAW75Q="
           crossOrigin="anonymous"
         ></script>
       </body>

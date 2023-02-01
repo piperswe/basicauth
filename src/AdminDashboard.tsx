@@ -1,6 +1,5 @@
 import React from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
-import { Variant } from "react-bootstrap/esm/types";
+import { Button, Card, Form, Icon, Message, Segment } from "semantic-ui-react";
 import { AdminDashboardActionType } from "./admin";
 import { Client, getClients } from "./clients/clients";
 import Env from "./env";
@@ -17,102 +16,116 @@ function ClientView({
   previewURL: string;
 }) {
   return (
-    <Card className="mb-3">
-      <Card.Header>{client.name}</Card.Header>
-      <Card.Body>
-        <p>
-          Client ID: <code>{client.id}</code>
-        </p>
-        <p>
-          Client Secret: <code>{client.secret}</code>
-        </p>
-        <p>
-          <a
-            href={`/oidc/authorize?response_type=code&client_id=${encodeURIComponent(
-              client.id
-            )}&scope=openid&redirect_uri=${encodeURIComponent(previewURL)}`}
-          >
-            Preview login page
-          </a>
-        </p>
+    <Card>
+      <Card.Content>
+        <Card.Header>{client.name}</Card.Header>
+        <Card.Description>
+          <p>
+            Client ID: <code>{client.id}</code>
+          </p>
+          <p>
+            Client Secret: <code>{client.secret}</code>
+          </p>
+          <p>
+            <a
+              href={`/oidc/authorize?response_type=code&client_id=${encodeURIComponent(
+                client.id
+              )}&scope=openid&redirect_uri=${encodeURIComponent(previewURL)}`}
+            >
+              Preview login page
+            </a>
+          </p>
+        </Card.Description>
+      </Card.Content>
+      <Card.Content extra>
         <ActionForm
           action={AdminDashboardActionType.DeleteClient}
           params={{ id: client.id }}
         >
-          <Button type="submit" variant="danger" className="mt-3">
+          <Form.Button type="submit" negative icon labelPosition="left">
+            <Icon name="remove" />
             Delete
-          </Button>
+          </Form.Button>
         </ActionForm>
-      </Card.Body>
+      </Card.Content>
     </Card>
   );
 }
 
 function UserView({ user }: { user: User }) {
   return (
-    <Card className="mb-3">
-      <Card.Header>
-        ID {user.id}: {user.username}
-      </Card.Header>
-      <Card.Body>
+    <Card>
+      <Card.Content>
+        <Card.Header>{user.username}</Card.Header>
+        <Card.Description>
+          <p>ID: {user.id}</p>
+          <p>
+            Email: <a href={`mailto:${user.email}`}>{user.email}</a>
+          </p>
+        </Card.Description>
+      </Card.Content>
+      <Card.Content extra>
         <ActionForm
           action={AdminDashboardActionType.ChangeEmail}
           params={{ id: user.id }}
           className="mb-3"
         >
-          <Form.Group className="mb-3 form-floating">
-            <Form.Control
-              type="email"
-              name="email"
-              value={user.email}
-              placeholder="Enter a new email address"
-            />
-            <Form.Label>New email address</Form.Label>
-          </Form.Group>
-          <Button type="submit" variant="primary">
+          <Form.Input
+            fluid
+            type="email"
+            label="Email"
+            placeholder="Email"
+            value={user.email}
+            name="email"
+          />
+          <Form.Button type="submit" primary icon labelPosition="left">
+            <Icon name="edit" />
             Change email
-          </Button>
+          </Form.Button>
         </ActionForm>
+      </Card.Content>
+      <Card.Content extra>
         <ActionForm
           action={AdminDashboardActionType.ChangePassword}
           params={{ id: user.id }}
           className="mb-3"
         >
-          <Form.Group className="mb-3 form-floating">
-            <Form.Control
-              type="password"
-              name="password"
-              placeholder="Enter a new password"
-            />
-            <Form.Label>New password</Form.Label>
-          </Form.Group>
-          <Button type="submit" variant="primary">
+          <Form.Input
+            fluid
+            type="password"
+            label="Password"
+            placeholder="Password"
+            name="password"
+          />
+          <Form.Button type="submit" primary icon labelPosition="left">
+            <Icon name="edit" />
             Change password
-          </Button>
+          </Form.Button>
         </ActionForm>
+      </Card.Content>
+      <Card.Content extra>
         <ActionForm
           action={AdminDashboardActionType.DeleteUser}
           params={{ id: user.id }}
         >
-          <Button type="submit" variant="danger">
+          <Form.Button type="submit" negative icon labelPosition="left">
+            <Icon name="remove user" />
             Delete
-          </Button>
+          </Form.Button>
         </ActionForm>
-      </Card.Body>
+      </Card.Content>
     </Card>
   );
 }
 
 export interface FlashProps {
-  variant: Variant;
+  variant: "success";
   message: string;
 }
 
 function Flash({ flash }: { flash: FlashProps }) {
   return (
-    <Alert variant={flash.variant} dismissible={true}>
-      {flash.message}
-    </Alert>
+    <Message success={flash.variant === "success"}>{flash.message}</Message>
   );
 }
 
@@ -146,80 +159,84 @@ export default function AdminDashboard({ flash, request, env, data }: Props) {
       <h1>{env.NAME} Admin</h1>
       {flash ? <Flash flash={flash} /> : null}
       <h2>Clients</h2>
-      {data.clients.map((client) => (
-        <ClientView
-          client={client}
-          previewURL={previewURL.toString()}
-          key={client.id}
-        />
-      ))}
-      <Card className="mb-3">
-        <Card.Header>Create client</Card.Header>
-        <Card.Body>
-          <ActionForm action={AdminDashboardActionType.CreateClient}>
-            <Form.Group className="mb-3 form-floating">
-              <Form.Control
-                type="text"
-                name="name"
-                placeholder="Enter a client name"
-              />
-              <Form.Label>Name</Form.Label>
-            </Form.Group>
-            <Button type="submit" variant="primary">
-              Create client
-            </Button>
-          </ActionForm>
-        </Card.Body>
-      </Card>
+      <Card.Group>
+        {data.clients.map((client) => (
+          <ClientView
+            client={client}
+            previewURL={previewURL.toString()}
+            key={client.id}
+          />
+        ))}
+      </Card.Group>
+      <Segment>
+        <h3>Create client</h3>
+        <ActionForm action={AdminDashboardActionType.CreateClient}>
+          <Form.Input fluid label="Name" placeholder="Name" name="name" />
+          <Form.Button type="submit" primary icon labelPosition="left">
+            <Icon name="add" />
+            Create client
+          </Form.Button>
+        </ActionForm>
+      </Segment>
       <h2>Users</h2>
-      {data.users.map((user) => (
-        <UserView user={user} key={user.id} />
-      ))}
-      <Card className="mb-3">
-        <Card.Header>Create user</Card.Header>
-        <Card.Body>
-          <ActionForm action={AdminDashboardActionType.CreateUser}>
-            <Form.Group className="mb-3 form-floating">
-              <Form.Control
-                type="text"
-                name="username"
-                placeholder="Enter a username"
-              />
-              <Form.Label>Username</Form.Label>
-            </Form.Group>
-            <Form.Group className="mb-3 form-floating">
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="Enter an email address"
-              />
-              <Form.Label>Email address</Form.Label>
-            </Form.Group>
-            <Form.Group className="mb-3 form-floating">
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Enter a password"
-              />
-              <Form.Label>Password</Form.Label>
-            </Form.Group>
-            <Button type="submit" variant="primary">
-              Create user
-            </Button>
-          </ActionForm>
-        </Card.Body>
-      </Card>
+      <Card.Group>
+        {data.users.map((user) => (
+          <UserView user={user} key={user.id} />
+        ))}
+      </Card.Group>
+      <Segment>
+        <h3>Create user</h3>
+        <ActionForm action={AdminDashboardActionType.CreateUser}>
+          <Form.Input
+            fluid
+            label="Username"
+            placeholder="Username"
+            name="username"
+          />
+          <Form.Input
+            fluid
+            type="email"
+            label="Email"
+            placeholder="Email"
+            name="email"
+          />
+          <Form.Input
+            fluid
+            type="password"
+            label="Password"
+            placeholder="Password"
+            name="password"
+          />
+          <Form.Button type="submit" primary icon labelPosition="left">
+            <Icon name="add user" />
+            Create user
+          </Form.Button>
+        </ActionForm>
+      </Segment>
       <h2>Keys</h2>
       <pre>
         <code>{JSON.stringify(keysetToJwks(data.keyset), null, 2)}</code>
       </pre>
-      <ActionForm action={AdminDashboardActionType.RefreshKeys}>
-        <Button type="submit" variant="warning">
+      <p>
+        Refreshing keys will add a new key and remove the oldest, keeping 2 keys
+        valid at any given time. Clearing keys will delete all keys without
+        replacing them. For a fresh start with one new key, clear then refresh.
+      </p>
+      <ActionForm
+        action={AdminDashboardActionType.RefreshKeys}
+        style={{ display: "inline-block" }}
+      >
+        <Button type="submit" secondary icon labelPosition="left">
+          <Icon name="refresh" />
           Refresh keys
         </Button>
       </ActionForm>
-      <ActionForm action={AdminDashboardActionType.ClearKeys}>
-        <Button type="submit" variant="danger">
+      <ActionForm
+        action={AdminDashboardActionType.ClearKeys}
+        style={{ display: "inline-block" }}
+      >
+        <Button type="submit" negative icon labelPosition="left">
+          <Icon name="remove" />
           Clear keys
         </Button>
       </ActionForm>
