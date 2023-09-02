@@ -14,7 +14,7 @@ import {
   createUser,
   deleteUser,
   getUserById,
-} from "./users.ts/users";
+} from "./users/users";
 import { getCodeData } from "./oidc/authorization";
 import { generateToken } from "./oidc/token";
 import { okReact } from "./frontend/render";

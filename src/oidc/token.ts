@@ -3,7 +3,7 @@ import { getCodeData } from "./authorization";
 import { Client, getClientById } from "../clients/clients";
 import Env from "../env";
 import { getKeyset, getSigningKey, Key } from "../jwks/keys";
-import { getUserById, User } from "../users.ts/users";
+import { getUserById, User } from "../users/users";
 
 import { JSONResponse } from "@worker-tools/json-fetch";
 import { Context } from "@worker-tools/middleware";

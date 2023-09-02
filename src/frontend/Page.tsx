@@ -11,6 +11,7 @@ export default function Page({ title, children }: Props) {
     <html>
       <head>
         <title>{title}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/semantic-ui-css@2.5.0/semantic.min.css"
@@ -21,8 +22,8 @@ export default function Page({ title, children }: Props) {
       <body>
         <Container>{children}</Container>
         <script
-          src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"
-          integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+          src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
           crossOrigin="anonymous"
         ></script>
         <script

@@ -2,7 +2,7 @@ import AuthorizationForm from "./AuthorizationForm";
 
 import Env from "../env";
 import { getClientById } from "../clients/clients";
-import { checkPassword, getUserByUsername } from "../users.ts/users";
+import { checkPassword, getUserByUsername } from "../users/users";
 import { okReact } from "../frontend/render";
 
 import { badRequest, forbidden, found } from "@worker-tools/response-creators";
