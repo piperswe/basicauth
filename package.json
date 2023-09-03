@@ -21,7 +21,8 @@
   "private": true,
   "scripts": {
     "start": "wrangler dev",
-    "deploy": "wrangler publish",
+    "deploy": "wrangler deploy",
+    "migrate": "wrangler d1 migrations apply basicauth",
     "test": "vitest"
   },
   "packageManager": "yarn@3.6.3",

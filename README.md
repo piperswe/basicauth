@@ -12,5 +12,6 @@ yarn wrangler d1 create basicauth
 # replace the id for the DB d1 database in wrangler.toml with the output from that command
 # update the route in wrangler.toml
 # update the vars in wrangler.toml
-yarn wrangler deploy
+yarn migrate
+yarn deploy
 ```
